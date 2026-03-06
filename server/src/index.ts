@@ -12,6 +12,7 @@ type NextResponse = {
   id: string;
   german: string;
   english: string; // used as optional hint
+  bulgarian: string; // included so "Give up" can show the answer
 };
 
 type AnswerRequestBody = {
@@ -63,10 +64,11 @@ function createApp() {
       const id = crypto.randomUUID();
       createSession({ id, german, english, bulgarian });
 
-      const payload: NextResponse = { id, german, english };
+      const payload: NextResponse = { id, german, english, bulgarian };
       return res.json(payload);
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Failed to fetch/translate word.";
+      console.error("Error fetching word:", msg);
       return res.status(502).json({ error: msg });
     }
   });
